@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Món quà bất ngờ</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ffe6e6; /* Màu nền hồng nhạt */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        /* Style cho Form nhập liệu */
+        #login-form {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 300px;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ffcccc;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        button {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #e60000;
+        }
+
+        /* Style cho Hộp quà */
+        #gift-box {
+            font-size: 100px; /* Kích thước hộp quà */
+            cursor: pointer;
+            display: none; /* Ẩn ban đầu */
+            position: absolute;
+            top: -150px; /* Vị trí bắt đầu rơi */
+            transition: transform 0.2s;
+        }
+
+        #gift-box:hover {
+            transform: scale(1.1);
+        }
+
+        /* Hiệu ứng rơi */
+        @keyframes fall {
+            0% { top: -150px; }
+            60% { top: 50%; transform: translateY(-50%); }
+            80% { top: 45%; transform: translateY(-50%); }
+            100% { top: 50%; transform: translateY(-50%); }
+        }
+
+        .falling {
+            display: block !important;
+            animation: fall 1.5s forwards ease-in-out;
+        }
+
+        /* Style cho dòng chữ cuối cùng */
+        #message {
+            display: none;
+            font-size: 24px;
+            color: #d63031;
+            font-weight: bold;
+            animation: fadeIn 2s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-form">
+        <h2 style="color: #ff4d4d;">Chào bạn!</h2>
+        <p>Nhập thông tin để nhận quà nhé</p>
+        <input type="text" id="name" placeholder="Họ và tên của em">
+        <input type="date" id="dob">
+        <button onclick="checkInfo()">Nhận quà</button>
+    </div>
+
+    <div id="gift-box" onclick="openGift()">🎁</div>
+
+    <div id="message">
+        <h1>Tôi yêu em, bé iu của tôi 😘</h1>
+        <p>❤️</p>
+    </div>
+
+    <script>
+        function checkInfo() {
+            const name = document.getElementById('name').value;
+            const dob = document.getElementById('dob').value;
+
+            // Kiểm tra xem đã nhập chưa (có thể bỏ qua nếu muốn ai cũng mở được)
+            if (name === "" || dob === "") {
+                alert("Em chưa nhập tên hoặc ngày sinh kìa! 😠");
+                return;
+            }
+
+            // Ẩn form và hiện hộp quà rơi
+            document.getElementById('login-form').style.display = 'none';
+            const gift = document.getElementById('gift-box');
+            gift.classList.add('falling');
+        }
+
+        function openGift() {
+            // Ẩn hộp quà và hiện lời chúc
+            document.getElementById('gift-box').style.display = 'none';
+            document.getElementById('message').style.display = 'block';
+            
+            // Thêm hiệu ứng tim bay (nếu muốn đơn giản thì bỏ qua phần này)
+            createHearts();
+        }
+
+        function createHearts() {
+            // Tạo một vài trái tim bay lên cho đẹp
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.style.position = 'fixed';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = '100vh';
+                heart.style.fontSize = Math.random() * 20 + 20 + 'px';
+                heart.style.transition = '4s';
+                document.body.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.style.top = '-10vh';
+                    heart.style.opacity = '0';
+                }, 100);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 4000);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
