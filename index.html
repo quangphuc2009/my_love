@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Món quà bất ngờ</title>
     <style>
+        /* --- GIỮ NGUYÊN PHẦN CSS --- */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #ffe6e6; /* Màu nền hồng nhạt */
@@ -53,12 +54,13 @@
 
         /* Style cho Hộp quà */
         #gift-box {
-            font-size: 100px; /* Kích thước hộp quà */
+            font-size: 100px;
             cursor: pointer;
-            display: none; /* Ẩn ban đầu */
+            display: none;
             position: absolute;
-            top: -150px; /* Vị trí bắt đầu rơi */
+            top: -150px;
             transition: transform 0.2s;
+            z-index: 10; /* Đảm bảo hộp quà nằm trên cùng */
         }
 
         #gift-box:hover {
@@ -81,15 +83,22 @@
         /* Style cho dòng chữ cuối cùng */
         #message {
             display: none;
-            font-size: 24px;
+            position: absolute; /* Định vị tuyệt đối để căn giữa */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%; /* Đảm bảo không bị tràn màn hình */
+            font-size: 28px; /* Tăng kích thước chữ lên một chút */
             color: #d63031;
             font-weight: bold;
             animation: fadeIn 2s;
+            z-index: 5; /* Nằm dưới hộp quà khi chưa mở */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1); /* Thêm bóng cho chữ nổi bật */
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translate(-50%, -40%); } /* Hiệu ứng hiện lên nhẹ nhàng */
+            to { opacity: 1; transform: translate(-50%, -50%); }
         }
     </style>
 </head>
@@ -106,8 +115,7 @@
     <div id="gift-box" onclick="openGift()">🎁</div>
 
     <div id="message">
-        <h1>Tôi yêu em, bé iu của tôi 😘</h1>
-        <p>❤️</p>
+        Tôi yêu em, bé iu của tôi 😘
     </div>
 
     <script>
@@ -115,7 +123,7 @@
             const name = document.getElementById('name').value;
             const dob = document.getElementById('dob').value;
 
-            // Kiểm tra xem đã nhập chưa (có thể bỏ qua nếu muốn ai cũng mở được)
+            // Kiểm tra nhập liệu (tùy chọn)
             if (name === "" || dob === "") {
                 alert("Em chưa nhập tên hoặc ngày sinh kìa! 😠");
                 return;
@@ -127,17 +135,22 @@
             gift.classList.add('falling');
         }
 
+        // --- HÀM NÀY ĐÃ ĐƯỢC SỬA ---
         function openGift() {
-            // Ẩn hộp quà và hiện lời chúc
-            document.getElementById('gift-box').style.display = 'none';
+            // Xóa hẳn phần tử hộp quà khỏi trang web
+            const giftElement = document.getElementById('gift-box');
+            if (giftElement) {
+                giftElement.remove();
+            }
+
+            // Hiện lời chúc
             document.getElementById('message').style.display = 'block';
             
-            // Thêm hiệu ứng tim bay (nếu muốn đơn giản thì bỏ qua phần này)
+            // Kích hoạt hiệu ứng tim bay
             createHearts();
         }
 
         function createHearts() {
-            // Tạo một vài trái tim bay lên cho đẹp
             setInterval(() => {
                 const heart = document.createElement('div');
                 heart.innerHTML = '❤️';
@@ -145,7 +158,8 @@
                 heart.style.left = Math.random() * 100 + 'vw';
                 heart.style.top = '100vh';
                 heart.style.fontSize = Math.random() * 20 + 20 + 'px';
-                heart.style.transition = '4s';
+                heart.style.zIndex = '1'; // Tim bay ở lớp nền
+                heart.style.transition = '4s ease-in'; // Bay lên chậm rãi
                 document.body.appendChild(heart);
                 
                 setTimeout(() => {
@@ -155,7 +169,7 @@
 
                 setTimeout(() => {
                     heart.remove();
-                }, 4000);
+                }, 4100);
             }, 300);
         }
     </script>
